@@ -1,9 +1,9 @@
 {
-   "My": {
-    "name": "My.png",
+   "MLPP": {
+    "name": "MLPP.png",
     "x": 1024,
-    "y": -1024,
+    "y": -1536,
     "width": 3072,
-    "height": 3072 
+    "height": 3584 
 }
 }
