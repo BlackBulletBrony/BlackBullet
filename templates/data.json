@@ -1,4 +1,11 @@
 {
+   "Background": {
+    "name": "Background.png",
+    "x": -4096,
+    "y": -4096,
+    "width": 8192,
+    "height": 8192 
+},
    "Sector 1": {
     "name": "Sector 1.png",
     "x": -4096,
