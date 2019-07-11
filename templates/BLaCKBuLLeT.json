@@ -1,4 +1,12 @@
 {
+   "grid": { 
+    "name": "grid.png", 
+    "x": -4096,
+    "y": -4096,
+    "width": 8192,
+    "height": 8192,
+    "type": "grid" 
+},
    "Background": {
     "name": "Background.png",
     "x": -4096,
