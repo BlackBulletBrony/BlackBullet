@@ -36,10 +36,10 @@
 },
    "grid": { 
     "name": "grid.png", 
-    "x": 0,
-    "y": 0,
-    "width": 4096,
-    "height": 4096,
+    "x": 1615,
+    "y": 35,
+    "width": 267,
+    "height": 786,
     "type": "grid" 
 }
 }
