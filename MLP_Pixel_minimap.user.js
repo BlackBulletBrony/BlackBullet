@@ -83,8 +83,6 @@
         re = /(.*)\/\?p=(\-?(?:\d*)),(\-?(?:\d*))/g;
         //Regular Expression to get coordinates from cursor
         rec = /x\:(\d*) y\:(\d*)/g;
-        //DOM element of the displayed X, Y variables
-        coorDOM = null;
         //coordinates of the middle of the window
         x_window = 0;
         y_window = 0;
@@ -116,15 +114,16 @@
         settings.innerHTML =
             `<div id = "settingsDiv" style = "width:250px;display: none; position: absolute; right: 50%; bottom: 50%;">`+
                 `<div class="posy" id="posyt" style="${map.settings[map.style]}.settings[map.style]}">`+
-                    `<span style = "line-height: 35px;">MLP Pixel minimap: settings</span>`+
-                    `<div style = "text-align:left;line-height: 25px">`+
+                    `<a style = "position: absolute;line-height: 35px; left: 5px;">MLPP Minimap: settings</a><a id = "settingsDivCancel" style = "position: absolute; right: 5px; top: -2px; cursor: pointer;">[ X ]</a>`+
+                    `<div style = "padding-top: 25px; text-align:left;line-height: 25px">`+
+                        `<hr style = "border-color: darkGrey;">`+
                         `Cursor color: <span id = "cursorColor"style = "cursor:pointer;color:${cursorColor}">${cursorColor}</span>`+
                         `<br>`+
-                        `Draw grid: <span id = "grid"style = "cursor:pointer;">${grid}</span>`+
+                        `Draw grid: <span id = "grid" style = "cursor:pointer;">${grid}</span>`+
                         `<br>`+
-                        `Minimap style: <span id = "mapStyle"style = "cursor:pointer;">${map.style}</span>`+
+                        `Minimap style: <span id = "mapStyle" style = "cursor:pointer;">${map.style}</span>`+
                         `<br>`+
-                        `Sectors: <span id = "sectors"style = "cursor:pointer;">${sectors}</span>`+
+                        `Sectors: <span id = "sectors" style = "cursor:pointer;">${sectors}</span>`+
                     `</div>`+
                 `</div>`+
             `<div>`;
@@ -137,56 +136,60 @@
             let i = cursorColors.indexOf(cursorColor);
             i++;
             if(!cursorColors[i])
-                if(i >= cursorColors.length) i = 0;
-                else i = cursorColors.length;
+                if(i >= cursorColors.length)
+                    i = 0;
+                else
+                    i = cursorColors.length;
 
             cursorColor = cursorColors[i];
             localStorage.cursorColor = cursorColor;
 
             $(`cursorColor`).innerHTML = cursorColor;
             $(`cursorColor`).style.color = cursorColor
+
             drawCursor();
         };
 
         $(`grid`).onclick = () => {
-            if(localStorage.grid == `Off`){
-                localStorage.grid = `On`;
+            if(grid == `Off`)
                 grid = `On`;
-            }else{
+            else
                 grid = `Off`;
-                localStorage.grid = `Off`;
-            }
+
+            localStorage.grid = grid;
             $(`grid`).innerHTML = grid;
+
+            ctx_minimap_board.clearRect(0, 0, minimap_board.width, minimap_board.height);
             drawBoard();
         };
 
         $(`mapStyle`).onclick = () => {
-            if(map.style == `Old`){
-                localStorage.mapStyle = `New`;
+            if(map.style == `Old`)
                 map.style = `New`;
-                $(`settingsDiv`).childNodes[0].style = map.settings.New;
-                $(`mapbg`).style = map.mapbg.New;
-                $(`minimapbg`).style = map.minimapbg.New;
-            }else{
-                localStorage.mapStyle = `Old`;
+            else
                 map.style = `Old`;
-                $(`settingsDiv`).childNodes[0].style = map.settings.Old;
-                $(`mapbg`).style = map.mapbg.Old;
-                $(`minimapbg`).style = map.minimapbg.Old;
-            }
+
+            localStorage.mapStyle = map.style;
+            $(`settingsDiv`).childNodes[0].style = map.settings[map.style];
+            $(`mapbg`).style = map.mapbg[map.style];
+            $(`minimapbg`).style = map.minimapbg[map.style];
             $(`mapStyle`).innerHTML = map.style;
         };
 
         $(`sectors`).onclick = () => {
-            if(sectors == `Off`){
-                localStorage.sectors = `On`;
+            if(sectors == `Off`)
                 sectors = `On`;
-                $(`sectors`).innerText = `On`;
-            }else{
-                localStorage.sectors = `Off`;
+            else
                 sectors = `Off`;
-                $(`sectors`).innerText = `Off`;
-            }
+
+            $(`sectors`).innerText = sectors;
+            localStorage.sectors = sectors;
+
+            drawTemplates();
+        };
+
+        $(`settingsDivCancel`).onclick = () => {
+            changeDisplay(`settingsDiv`);
         };
 
         //>----------------------------------------------------
@@ -195,7 +198,7 @@
 
         let list = '';
         for (let name in factions)
-            if (name != '') list += `<li id="' + name + '">' + '<span Style="cursor:pointer;color:' + factions[name].color + '">${name}'<span></li>`;
+            if (name != '') list += `<li id="${name}"><span Style="cursor:pointer;color:${factions[name].color}">${name}'<span></li>`;
 
         var div = document.createElement('div');
         div.class = 'post block bc2';
@@ -206,16 +209,16 @@
                     '</div>' +
                     '<div id="minimap-box" style="position: relative;width:280px;height:200px">' +
                         '<canvas id="minimap" style="width: 100%; height: 100%;z-index:1;position:absolute;top:0;left:0;"></canvas>' +
-                        '<canvas id="minimapCover" style="width: 100%; height: 100%;z-index:2;position:absolute;top:0;left:0;opacity:0.5;"></canvas>' +
-                        '<canvas id="minimap-board" style="width: 100%; height: 100%;z-index:2;position:absolute;top:0;left:0;"></canvas>' +
-                        '<canvas id="minimap-cursor" style="width: 100%; height: 100%;z-index:3;position:absolute;top:0;left:0;"></canvas>' +
+                        '<canvas id="minimapCover" style="width: 100%; height: 100%;z-index:2;position:absolute;top:0;left:0;opacity:0.65;"></canvas>' +
+                        '<canvas id="minimap-board" style="width: 100%; height: 100%;z-index:3;position:absolute;top:0;left:0;"></canvas>' +
+                        '<canvas id="minimap-cursor" style="width: 100%; height: 100%;z-index:4;position:absolute;top:0;left:0;"></canvas>' +
                     '</div><div id="minimap-config" style="line-height:15px;">' +
                     '<span id="hide-map" style="cursor:pointer;font-weight:bold;color: rgb(250, 0, 0);"> OFF' +
-                    '</span> | <span id="follow-mouse" style="cursor:pointer;"Follow the mouse' +
+                    '</span> <span id="follow-mouse" style="cursor:pointer;"Follow the mouse |' +
                     '</span> | Zoom: <span id="zoom-plus" style="cursor:pointer;font-weight:bold;color: rgb(0, 100, 250);">+</span>  /  ' +
                     '<span id="zoom-minus" style="cursor:pointer;font-weight:bold;color: rgb(0, 50, 250);">-</span>' +
                     '<div id = "settings" style = "display:none">'+
-                        '<ul id="list" style="line-height:20px;text-align:left;">' +
+                        '<ul id="list" style="line-height:15px;text-align:left;">' +
                             list +
                         '</ul>' +
                     '<div>'+
@@ -257,12 +260,12 @@
         lif.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 factions = JSON.parse(this.responseText);
-                if (debug) console.log(this.responseText);
+                if (debug) log(this.responseText);
 
-                if ((localStorage.getItem('faction') == null) || (factions[localStorage.getItem('faction')] == undefined))
+                if ((localStorage.faction == null) || (factions[localStorage.faction] == undefined))
                     faction = Object.keys(factions)[0];
                 else
-                    faction = localStorage.getItem('faction');
+                    faction = localStorage.faction;
 
                 updateloop();
 
@@ -275,6 +278,8 @@
                 for (let name in factions)
                     $(name).onclick = function() {
                         changeDisplay('settings');
+                        if(this.id == faction)
+                            return;
                         faction = name;
                         localStorage.setItem('faction', name);
                         updateloop();
@@ -334,20 +339,20 @@
             if (!toggle_show)
                 return;
             coorDOM = $("coords");
-            coordsXY = coorDOM.innerHTML.split(/(\d+)/)
+            coordsXY = coorDOM.innerHTML.split(` y:`);
             //console.log(coordsXY);
-            x_new = +(coordsXY[0].substring(2) + coordsXY[1])
-            y_new = +(coordsXY[2].substring(3) + coordsXY[3]);
+            x_new = +coordsXY[0].split(`x:`)[1];
+            y_new = +coordsXY[1];
             //console.log({x_new,y_new});
-            if (x != x_new || y != y_new) {
-                x = parseInt(x_new);
-                y = parseInt(y_new);
+            if (!(x == x_new && y == y_new)) {
+                x = x_new;
+                y = y_new;
                 if (toggle_follow) {
                     x_window = x;
                     y_window = y;
-                } else {
+                } else
                     drawCursor();
-                }
+
                 loadTemplates();
             }
         }, false);
@@ -358,10 +363,10 @@
 
 
     function updateloop() {
-        if (debug) console.log("Updating Template List");
+        if (debug) log("Updating Template List");
         // Get JSON of available templates
-        var xmlhttp = new XMLHttpRequest();
-        let url = undefined;
+        let xmlhttp = new XMLHttpRequest();
+            url = undefined;
 
         if (factions[faction].templates == 'own') {
             if (factions[faction].type == 2)
@@ -377,7 +382,6 @@
 
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                json_upl = true;
                 template_list = JSON.parse(this.responseText);
 
                 for(let name in template_list){
@@ -394,12 +398,12 @@
         xmlhttp.open("GET", url, true);
         xmlhttp.send();
 
-        if (debug) console.log("Refresh got forced.");
+        if (debug) log("Refresh got forced.");
         image_list = [];
         loadTemplates();
 
         setTimeout(updateloop, 60000)
-    }
+    };
 
     function toggleShow() {
         toggle_show = !toggle_show;
@@ -407,6 +411,7 @@
             $("minimap-box").style.display = "block";
             $("minimap-config").style.display = "block";
             $("minimap-text").style.display = "none";
+
             $("minimapbg").onclick = function() {};
             loadTemplates();
         } else {
@@ -414,16 +419,17 @@
             $("minimap-config").style.display = "none";
             $("minimap-text").style.display = "block";
             $("minimap-text").innerHTML = "Minimap";
-            $("minimapbg").onclick = function() {
-                toggleShow()
+
+            $("minimapbg").onclick = function(){
+                toggleShow();
             };
         }
-    }
+    };
 
     function zoomIn() {
         if (!zooming_in)
             return;
-        zoomlevel = zoomlevel * 1.1;
+        zoomlevel *= 1.1;
         if (zoomlevel > 45) {
             zoomlevel = 45;
             return;
@@ -432,12 +438,12 @@
         drawCursor();
         loadTemplates();
         setTimeout(zoomIn, zoom_time);
-    }
+    };
 
     function zoomOut() {
         if (!zooming_out)
             return;
-        zoomlevel = zoomlevel / 1.1;
+        zoomlevel /= 1.1;
         if (zoomlevel < 1) {
             zoomlevel = 1;
             return;
@@ -452,20 +458,14 @@
         if ((!toggle_show)||(template_list == null))
             return;
 
-        var x_left = x_window - minimap.width / zoomlevel / 2;
-        var x_right = x_window + minimap.width / zoomlevel / 2;
-        var y_top = y_window - minimap.height / zoomlevel / 2;
-        var y_bottom = y_window + minimap.height / zoomlevel / 2;
-
-        var keys = [];
-
-        for (var k in template_list)
-            keys.push(k);
+        var x_left = x_window - (minimap.width >>> 1) / zoomlevel,
+            x_right = x_window + (minimap.width >>> 1) / zoomlevel,
+            y_top = y_window - (minimap.height >>> 1) / zoomlevel,
+            y_bottom = y_window + (minimap.height >>> 1) / zoomlevel;
 
         needed_templates = [];
 
-        for (let i = 0; i < keys.length; i++) {
-            template = keys[i];
+        for (let template in template_list) {
 
             var temp_x = template_list[template].x;
             var temp_y = template_list[template].y;
@@ -501,16 +501,14 @@
     }
 
     function loadImage(imagename) {
-        if (debug) console.log("    Load image " + imagename);
+        if (debug) log("    Load image " + imagename);
+
         image_list[imagename] = new Image();
 
-        image_list[imagename].src = factions[faction].url + "images/" + template_list[imagename].name;
+        image_list[imagename].src = `${factions[faction].url}images/${imagename}.png`;
 
         image_list[imagename].onload = function() {
             counter++;
-
-            if(template_list[imagename].type != `grid`)
-                My_imagename = imagename;
 
             if (counter == needed_templates.length)
                 drawTemplates();
@@ -521,59 +519,58 @@
         ctx_minimap.clearRect(0, 0, minimap.width, minimap.height);
         ctx_minimapCover.clearRect(0, 0, minimapCover.width, minimapCover.height);
 
-        var x_left = x_window - minimap.width / zoomlevel / 2,
-            y_top = y_window - minimap.height / zoomlevel / 2,
-            pictureShift = 1;
+        let x_left = x_window - (minimap.width >>> 1) / zoomlevel,
+            y_top = y_window - (minimap.height >>> 1) / zoomlevel,
+            pictureShift = 0.75,//FOR SECTORS
+            x_leftG = x_window - (minimap.width >>> 1) / zoomlevel / pictureShift,
+            y_topG = y_window - (minimap.height >>> 1) / zoomlevel / pictureShift;
 
-        for (var i = 0; i < needed_templates.length; i++) {
-            if(template_list[needed_templates[i]].type == `grid`)
-                continue;
-            var template = needed_templates[i];
-            var img = image_list[template];
-            ctx_minimap.drawImage(image_list[template], ((template_list[template].x - x_left) * zoomlevel), ((template_list[template].y - y_top) * zoomlevel), (zoomlevel * image_list[template].width), (zoomlevel * image_list[template].height));
-        }
-
-        if(sectors == `Off`)
-            return;
         for (let i = 0; i < needed_templates.length; i++) {
+            var template = needed_templates[i];
+
             if(template_list[needed_templates[i]].type != `grid`)
-                continue;
-            let gTemplate = needed_templates[i];
-            ctx_minimapCover.drawImage(image_list[gTemplate], ((template_list[gTemplate].x - x_left) * zoomlevel * pictureShift ), ((template_list[gTemplate].y - y_top) * zoomlevel * pictureShift ), (zoomlevel * pictureShift  * image_list[gTemplate].width), (zoomlevel * pictureShift  * image_list[gTemplate].height));
-        }
-    }
+                ctx_minimap.drawImage(image_list[template], ((template_list[template].x - x_left) * zoomlevel), ((template_list[template].y - y_top) * zoomlevel), (zoomlevel * image_list[template].width), (zoomlevel * image_list[template].height));
+            else if(sectors == `On`)
+                ctx_minimapCover.drawImage(image_list[template], ((template_list[template].x - x_leftG) * zoomlevel * pictureShift ), ((template_list[template].y - y_topG) * zoomlevel * pictureShift ), (zoomlevel * pictureShift  * image_list[template].width), (zoomlevel * pictureShift  * image_list[template].height));
+       }
+    };
 
     function drawBoard() {
-    ctx_minimap_board.clearRect(0, 0, minimap_board.width, minimap_board.height);
-    if ((grid == `Off`)||(zoomlevel <= 4.6))
-        return;
-    ctx_minimap_board.beginPath();
-    var bw = minimap_board.width + zoomlevel;
-    var bh = minimap_board.height + zoomlevel;
-    var xoff_m = (minimap.width / 2) % zoomlevel - zoomlevel;
-    var yoff_m = (minimap.height / 2) % zoomlevel - zoomlevel;
-    var z = zoomlevel;
+        if ((grid == `Off`)||(zoomlevel <= 4.6))
+            return;
 
-    for (var x = 0; x <= bw; x += z) {
-        ctx_minimap_board.moveTo(x + xoff_m, yoff_m);
-        ctx_minimap_board.lineTo(x + xoff_m, bh + yoff_m);
-    }
+        ctx_minimap_board.clearRect(0, 0, minimap_board.width, minimap_board.height);
 
-    for (var x = 0; x <= bh; x += z) {
-        ctx_minimap_board.moveTo(xoff_m, x + yoff_m);
-        ctx_minimap_board.lineTo(bw + xoff_m, x + yoff_m);
-    }
-    ctx_minimap_board.strokeStyle = "black";
-    ctx_minimap_board.stroke();
-}
+        ctx_minimap_board.beginPath();
+        var bw = minimap_board.width + zoomlevel,
+            bh = minimap_board.height + zoomlevel,
+            xoff_m = (minimap.width >>> 1) % zoomlevel - zoomlevel,
+            yoff_m = (minimap.height >>> 1) % zoomlevel - zoomlevel;
+
+        for (var x = 0; x <= bw; x += zoomlevel) {
+            ctx_minimap_board.moveTo(x + xoff_m, yoff_m);
+            ctx_minimap_board.lineTo(x + xoff_m, bh + yoff_m);
+        }
+
+        for (var x = 0; x <= bh; x += zoomlevel) {
+            ctx_minimap_board.moveTo(xoff_m, x + yoff_m);
+            ctx_minimap_board.lineTo(bw + xoff_m, x + yoff_m);
+        }
+        ctx_minimap_board.strokeStyle = "black";
+        ctx_minimap_board.stroke();
+    };
 
     function drawCursor() {
-        var x_left = x_window - minimap.width / zoomlevel / 2;
-        var x_right = x_window + minimap.width / zoomlevel / 2;
-        var y_top = y_window - minimap.height / zoomlevel / 2;
-        var y_bottom = y_window + minimap.height / zoomlevel / 2;
+        var x_left = x_window - (minimap.width >>> 1) / zoomlevel;
+        var x_right = x_window +( minimap.width >>> 1) / zoomlevel;
+        var y_top = y_window - (minimap.height >>> 1) / zoomlevel;
+        var y_bottom = y_window + (minimap.height >>> 1) / zoomlevel;
+
         ctx_minimap_cursor.clearRect(0, 0, minimap_cursor.width, minimap_cursor.height);
-        if (x < x_left || x > x_right || y < y_top || y > y_bottom)return;
+
+        if (x < x_left || x > x_right || y < y_top || y > y_bottom)
+            return;
+
         xoff_c = x - x_left;
         yoff_c = y - y_top;
 
@@ -585,24 +582,28 @@
     }
 
     function getCenter() {
-        var url = window.location.href;
-        x_window = url.replace(re, '$2');
-        y_window = url.replace(re, '$3');
+        var url = window.location.search.split(`?p=`)[1].split(`,`);
+        x_window = +url[0];
+        y_window = +url[1];
         if (x_window == url || y_window == url) {
             x_window = 0;
             y_window = 0;
+        }else{
+            x_window = +x_window;
+            y_window = +y_window;
         }
-        x_window = +x_window;
-        y_window = +y_window;
+
         loadTemplates();
     }
 
     //-------------------------------------------------------------------------------------------
 
     function changeDisplay(id){
-        let e = $(id);
-        if (e.style.display == 'none') e.style.display = 'block';
-        else e.style.display = 'none';
+        let e = document.getElementById(id);
+        if (e.style.display == 'none')
+            e.style.display = 'block';
+        else
+            e.style.display = 'none';
     };
 
     function $(id){return document.getElementById(id)};
@@ -616,14 +617,13 @@
                 break;
             case 48://0
                 if (localStorage.debug == 'true') {
-                      localStorage.debug = false;
                     debug = false;
                     log('Debug is off')
                 }else{
-                localStorage.debug = true;
-                debug = true;
-                log('Debug is enabled')
+                    debug = true;
+                    log('Debug is enabled')
                 }
+                localStorage.debug = debug;
                 break;
             case 51://3
                 changeDisplay('settingsDiv');
