@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         MLPP Minimap
+// @name         MLP Pixel Minimap
 // @namespace    http://tampermonkey.net/
-// @version      1.1.1
+// @version      1.2.1
 // @description  My Little Pony Pixel Minimap for PixelZone.io
 // @match        https://pixelzone.io/*
 // @match        http://pixelzone.io/*
