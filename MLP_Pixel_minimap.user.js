@@ -10,7 +10,7 @@
 // @downloadURL  https://raw.githubusercontent.com/BlackBulletBrony/BlackBullet/master/MLP_Pixel_minimap.user.js
 // @grant        none
 // ==/UserScript==
-//Lallala
+//
 //Improved by the Endless Night. To the glory of Luna and the New Lunar Republic!
 //
 (function() {
@@ -24,8 +24,8 @@
 
     var range = 25;
     var selectColor = [];
-    var cursorColor = `springGreen`,
-        grid = `Off`,
+    var cursorColor = `red`,
+        grid = `On`,
         sectors = `Off`,
         debug = false,
         zoom,
@@ -33,11 +33,11 @@
             style: `New`,
             settings:{
                 Old: `background-color: rgba(0, 0, 0, 0.75); color: rgb(250, 250, 250); text-align: center; line-height: 42px; vertical-align: middle; width: auto; height: auto; border-radius: 21px; padding: 6px;`,
-                New: `background-color: rgba(0, 0, 0, 0.90); color: rgb(250, 250, 250); text-align: center; line-height: 42px; vertical-align: middle; width: auto; height: auto; border-radius: 1px; padding: 1px; padding-left: 5px;`
+                New: `background-color: rgba(0, 0, 0, 0.90); color: rgb(250, 250, 250); text-align: center; line-height: 42px; vertical-align: middle; width: auto; height: auto; border-radius: 1px; padding: 1px; padding-left: 1px;`
             },
             mapbg: {
                 Old: `background-color: rgba(0, 0, 0, 0.75); color: rgb(250, 250, 250); text-align: center; line-height: 42px; vertical-align: middle; width: auto; height: auto; border-radius: 21px; padding: 6px;`,
-                New: `background-color: rgba(0, 0, 0, 0.90); color: rgb(250, 250, 250); text-align: center; line-height: 42px; vertical-align: middle; width: auto; height: auto; border-radius: 1px; padding: 1px; padding-left: 5px;`
+                New: `background-color: rgba(0, 0, 0, 0.90); color: rgb(250, 250, 250); text-align: center; line-height: 42px; vertical-align: middle; width: auto; height: auto; border-radius: 1px; padding: 1px; padding-left: 1px;`
            },
             minimapbg: {
                 Old: `position: absolute; right: 0.5em; bottom: 4.75em;`,
@@ -115,7 +115,7 @@
         settings.innerHTML =
             `<div id = "settingsDiv" style = "width:250px;display: none; position: absolute; right: 50%; bottom: 50%;">`+
                 `<div class="posy" id="posyt" style="${map.settings[map.style]}.settings[map.style]}">`+
-                    `<span style = "line-height: 35px;">MLPP MINIMAP: settings</span>`+
+                    `<span style = "line-height: 35px;">MLP Pixel minimap: settings</span>`+
                     `<div style = "text-align:left;line-height: 25px">`+
                         `Cursor color: <span id = "cursorColor"style = "cursor:pointer;color:${cursorColor}">${cursorColor}</span>`+
                         `<br>`+
@@ -206,8 +206,8 @@
                     '<div id="minimap-box" style="position: relative;width:280px;height:200px">' +
                         '<canvas id="minimap" style="width: 100%; height: 100%;z-index:1;position:absolute;top:0;left:0;"></canvas>' +
                         '<canvas id="minimapCover" style="width: 100%; height: 100%;z-index:2;position:absolute;top:0;left:0;opacity:0.5;"></canvas>' +
-                        '<canvas id="minimap-board" style="width: 100%; height: 100%;z-index:3;position:absolute;top:0;left:0;"></canvas>' +
-                        '<canvas id="minimap-cursor" style="width: 100%; height: 100%;z-index:4;position:absolute;top:0;left:0;"></canvas>' +
+                        '<canvas id="minimap-board" style="width: 100%; height: 100%;z-index:2;position:absolute;top:0;left:0;"></canvas>' +
+                        '<canvas id="minimap-cursor" style="width: 100%; height: 100%;z-index:3;position:absolute;top:0;left:0;"></canvas>' +
                     '</div><div id="minimap-config" style="line-height:15px;">' +
                     '<span id="hide-map" style="cursor:pointer;font-weight:bold;color: rgb(250, 0, 0);"> OFF' +
                     '</span> | <span id="follow-mouse" style="cursor:pointer;"Follow the mouse' +
