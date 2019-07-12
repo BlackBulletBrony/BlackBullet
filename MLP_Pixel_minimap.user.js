@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         MLPP Minimap
 // @namespace    http://tampermonkey.net/
-// @version      1.0.1
+// @version      1.1.1
 // @description  My Little Pony Pixel Minimap for PixelZone.io
 // @match        https://pixelzone.io/*
 // @match        http://pixelzone.io/*
@@ -11,7 +11,8 @@
 // @grant        none
 // ==/UserScript==
 //
-//Improved by the Endless Night. To the glory of Luna and the New Lunar Republic!
+// To the glory of Luna and the New Lunar Republic!
+// Improved by the Endless Night and MLP Pixel.
 //
 (function() {
     Number.prototype.between = function(a, b) {
@@ -49,7 +50,7 @@
     var factions = {
         "BLaCKBuLLeT": {
             "url": "https://raw.githubusercontent.com/BlackBulletBrony/BlackBullet/master/",
-            "color": "aqua",
+            "color": "#262626",
             "type": "2"
         }
     };
@@ -92,7 +93,7 @@
         y = 0;
         //list of all available templates
         template_list = null;
-        zoomlevel = 3;
+        zoomlevel = 5;
         //toggle options
         toggle_show = true;
         toggle_follow = true; //if minimap is following window, x_window = x and y_window = y;
@@ -291,7 +292,7 @@
             $("minimap-box").style.display = "none";
             $("minimap-config").style.display = "none";
             $("minimap-text").style.display = "block";
-            $("minimap-text").innerHTML = "Show Minimap";
+            $("minimap-text").innerHTML = "Minimap";
             $("minimap-text").style.cursor = "pointer";
         };
         $("minimap-text").onclick = function() {
@@ -412,7 +413,7 @@
             $("minimap-box").style.display = "none";
             $("minimap-config").style.display = "none";
             $("minimap-text").style.display = "block";
-            $("minimap-text").innerHTML = "Show Minimap";
+            $("minimap-text").innerHTML = "Minimap";
             $("minimapbg").onclick = function() {
                 toggleShow()
             };
