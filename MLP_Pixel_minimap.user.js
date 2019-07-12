@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         MLPP Minimap
 // @namespace    http://tampermonkey.net/
-// @version      1.0.0
+// @version      1.0.1
 // @description  My Little Pony Pixel Minimap for PixelZone.io
 // @match        https://pixelzone.io/*
 // @match        http://pixelzone.io/*
@@ -10,9 +10,8 @@
 // @downloadURL  https://raw.githubusercontent.com/BlackBulletBrony/BlackBullet/master/MLP_Pixel_minimap.user.js
 // @grant        none
 // ==/UserScript==
-//
-//To the glory of Luna and the New Lunar Republic!
-//Improved by the Endless Night
+//Lallala
+//Improved by the Endless Night. To the glory of Luna and the New Lunar Republic!
 //
 (function() {
     Number.prototype.between = function(a, b) {
