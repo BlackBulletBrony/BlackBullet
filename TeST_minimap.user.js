@@ -1,8 +1,9 @@
 // ==UserScript==
-// @name         MLP Pixel Minimap
+// @name         _B_B_ Pixel Minimap 3
 // @namespace    http://tampermonkey.net/
 // @version      1.2.1
 // @description  My Little Pony Pixel Minimap for PixelZone.io
+// @author       MLP Pixel
 // @match        https://pixelzone.io/*
 // @match        http://pixelzone.io/*
 // @homepage     https://github.com/BlackBulletBrony/BlackBullet
@@ -521,7 +522,7 @@
 
         let x_left = x_window - (minimap.width >>> 1) / zoomlevel,
             y_top = y_window - (minimap.height >>> 1) / zoomlevel,
-            pictureShift = 0.75,//FOR SECTORS
+            pictureShift = 1,//FOR SECTORS
             x_leftG = x_window - (minimap.width >>> 1) / zoomlevel / pictureShift,
             y_topG = y_window - (minimap.height >>> 1) / zoomlevel / pictureShift;
 
