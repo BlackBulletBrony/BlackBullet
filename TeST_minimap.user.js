@@ -1,19 +1,19 @@
 // ==UserScript==
-// @name         _B_B_ Pixel Minimap 3
+// @name         _B_B_ TeST Pixel Minimap
 // @namespace    http://tampermonkey.net/
-// @version      1.2.1
-// @description  My Little Pony Pixel Minimap for PixelZone.io
-// @author       MLP Pixel
+// @version      1.2.6
+// @description  My Little Pony Pixel (MLP Pixel) Minimap for PixelZone.io
+// @author       ConsoleBey and Endless Night
 // @match        https://pixelzone.io/*
 // @match        http://pixelzone.io/*
 // @homepage     https://github.com/BlackBulletBrony/BlackBullet
-// @updateURL    https://raw.githubusercontent.com/BlackBulletBrony/BlackBullet/master/MLP_Pixel_minimap.user.js
-// @downloadURL  https://raw.githubusercontent.com/BlackBulletBrony/BlackBullet/master/MLP_Pixel_minimap.user.js
+// @updateURL    https://raw.githubusercontent.com/BlackBulletBrony/BlackBullet/master/TeST_minimap.user.js
+// @downloadURL  https://raw.githubusercontent.com/BlackBulletBrony/BlackBullet/master/TeST_minimap.user.js
 // @grant        none
 // ==/UserScript==
 //
 // To the glory of Luna and the New Lunar Republic!
-// Improved by the Endless Night and MLP Pixel.
+// Improved by the Endless Night.
 //
 (function() {
     Number.prototype.between = function(a, b) {
